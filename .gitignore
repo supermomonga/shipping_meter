@@ -1,0 +1,5 @@
+
+data/*.csv
+build/*.html
+build/*.json
+build/*/*.*

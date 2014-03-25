@@ -1,0 +1,15 @@
+
+## Requirements
+
+Ruby version 2.1.0
+
+## How to use
+
+Put each csv files downloaded from GoogleSpreadsheet into `data` folder.
+
+then, simply run script.
+
+```
+ruby ./app.rb
+```
+
