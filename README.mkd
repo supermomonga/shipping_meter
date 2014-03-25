@@ -1,7 +1,7 @@
 
 ## Requirements
 
-Ruby version 2.1.0
+Ruby version 2.1.0 and `bundler` gem.
 
 ## How to use
 
@@ -12,4 +12,6 @@ then, simply run script.
 ```
 ruby ./app.rb
 ```
+
+It'll generate some files into `build` folder.
 

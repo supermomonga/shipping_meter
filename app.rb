@@ -72,10 +72,8 @@ new_zones = Hash[new_zones.map.with_index(1) { |(k,cs),i|
 #   puts
 # end
 
-country_zones.each do |(k,v)|
-  puts k
-  p v
-  puts '-----'
+File.open('./build/latest.json', 'w') do |f|
+  f.puts country_zones.to_json
 end
 
 # puts new_zones.to_json
