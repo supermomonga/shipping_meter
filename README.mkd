@@ -3,6 +3,8 @@
 
 Ruby version 2.1.0 and `bundler` gem.
 
+If you haven't installed a `bundler` gem, simply do `gem install bundler`.
+
 ## How to use
 
 Put each csv files downloaded from GoogleSpreadsheet into `data` folder.
