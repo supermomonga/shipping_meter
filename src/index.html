@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="App" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./js/angular.min.js"></script>
+    <script src="./js/ui-bootstrap-tpls-0.10.0.min.js"></script>
+    <script src="./js/app.js"></script>
+    <!-- <link rel="stylesheet" href="./css/app.css"> -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <title>Shipping cost table</title>
+  </head>
+  <body>
+    <div class="container" ng-controller="AppCtrl">
+      <div class="page-header">
+        <h2>Shipping cost table</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h3>Please input your country</h3>
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
+            <input type="text" class="form-control" ng-model="selected_country" typeahead-on-select="countrySelected()" typeahead="country_name for country_name in country_names | filter:$viewValue" placeholder="Please input your country">
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div ng-if="country">
+            <h3>Available shipping methods of {{country.name}}</h3>
+            <p>{{country.name}} is in {{country.zone}}.</p>
+            <table class="table table-bordered table-condensed">
+              <thead>
+                <th>Shipping method</th>
+                <th>Weight</th>
+                <th>Cost(JPY)</th>
+              </thead>
+              <tbody ng-repeat="method in country.methods">
+              <tr ng-repeat="cost in method.costs">
+                <th ng-if="$index == 0" rowspan="{{method.costs.length}}">{{$index == 0 ? method.name : ''}}{{method.costs.size}}</th>
+                <td>{{cost.weight}}</td>
+                <td>{{cost.cost}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div ng-if="!country">
+            <h3>Country not selected.</h3>
+            <div class="well well-sm">
+              Please input your country to input form.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

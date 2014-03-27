@@ -4,6 +4,7 @@ require 'bundler'
 Bundler.require
 require 'csv'
 require 'json'
+require 'fileutils'
 
 def csv_path sheet_name
   doc_name = 'ebay送料-システム用'
@@ -48,6 +49,7 @@ new_zones = Hash[new_zones.map.with_index(1) { |(k,cs),i|
     zone = "Zone #{i}"
     zone_orig = _[:zone_orig]
     country_zones[country] = {
+      name: country,
       methods: methods,
       zone: zone,
       zone_orig: zone_orig
@@ -62,6 +64,8 @@ new_zones = Hash[new_zones.map.with_index(1) { |(k,cs),i|
          }
        }
      }
+    }.reject{|m|
+      m[:costs].size == 0
     }
   end
   ["Zone #{i}", cs]
@@ -72,8 +76,29 @@ new_zones = Hash[new_zones.map.with_index(1) { |(k,cs),i|
 #   puts
 # end
 
-File.open('./build/latest.json', 'w') do |f|
-  f.puts country_zones.to_json
+data = {
+  country_names: country_zones.keys,
+  country_zones: country_zones
+}
+
+
+['index.html', 'latest.json', 'js', 'css'].map do |_|
+  path = "./build/#{_}"
+  File.unlink path if File.exist? path
 end
 
-# puts new_zones.to_json
+['index.html', 'js', 'css'].map do |_|
+  from = "./src/#{_}"
+  to = "./build/#{_}"
+  if File.exist? from
+    if File.file? from
+      FileUtils.cp from, to
+    else
+      FileUtils.cp_r from, to
+    end
+  end
+end
+
+File.open('./build/latest.json', 'w') do |f|
+  f.puts data.to_json
+end
