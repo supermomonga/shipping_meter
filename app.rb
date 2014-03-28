@@ -1,4 +1,5 @@
 # encoding: utf-8
+Encoding.default_external = 'UTF-8'
 
 require 'bundler'
 Bundler.require
