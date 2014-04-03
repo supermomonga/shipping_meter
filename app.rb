@@ -14,7 +14,7 @@ end
 
 zones             = CSV.table csv_path('ゾーン一覧')         , header_converters: nil
 countries         = CSV.table csv_path('国一覧')             , header_converters: nil
-methods           = CSV.table csv_path('発送方法一覧')       , header_converters: nil
+shipping_methods  = CSV.table csv_path('発送方法一覧')       , header_converters: nil
 countries_methods = CSV.table csv_path('国×発送方法')       , header_converters: nil
 methods_weights   = CSV.table csv_path('発送方法×重量一覧') , header_converters: nil
 
@@ -61,7 +61,7 @@ new_zones = Hash[new_zones.map.with_index(1) { |(k,cs),i|
        costs: methods_weights.select{|r| r['発送方法一覧.発送方法名'] == _ && r['ゾーン一覧.ゾーン名'] == zone_orig }.map{|w|
          {
            weight: "#{w['重量範囲（より大きい）']}g - #{w['重量範囲（以下）']}g",
-           cost: "#{w['金額（円）']}JPY"
+           cost: "#{w['金額（円）'].to_i + shipping_methods.find{|m| m['発送方法名'] == _ }.tap{|m| break m['書留料金（円）'].to_i + m['保険料金（円）'].to_i }}JPY"
          }
        }
      }
@@ -82,10 +82,23 @@ data = {
   country_zones: country_zones
 }
 
+def deleteall(delthem)
+  if FileTest.directory?(delthem) then
+    Dir.foreach( delthem ) do |file|
+      next if /^\.+$/ =~ file
+      deleteall( delthem.sub(/\/+$/,"") + "/" + file )
+    end
+    Dir.rmdir(delthem) rescue ""
+  else
+    File.delete(delthem)
+  end
+end
 
 ['index.html', 'latest.json', 'js', 'css'].map do |_|
   path = "./build/#{_}"
-  File.unlink path if File.exist? path
+  if File.exist? path
+    deleteall path
+  end
 end
 
 ['index.html', 'js', 'css'].map do |_|
