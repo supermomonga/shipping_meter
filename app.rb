@@ -8,7 +8,7 @@ require 'json'
 require 'fileutils'
 
 def csv_path sheet_name
-  doc_name = 'ebay送料-システム用'
+  doc_name = '送料-システム用'
   "./data/#{doc_name} - #{sheet_name}.csv"
 end
 
