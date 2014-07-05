@@ -8,9 +8,11 @@ require 'json'
 require 'fileutils'
 
 def csv_path sheet_name
-  doc_name = '送料-システム用'
+  doc_name = @doc_name
   "./data/#{doc_name} - #{sheet_name}.csv"
 end
+
+@doc_name = ARGV[0] ? ARGV[0] : '送料-システム用'
 
 zones             = CSV.table csv_path('ゾーン一覧')         , header_converters: nil
 countries         = CSV.table csv_path('国一覧')             , header_converters: nil
